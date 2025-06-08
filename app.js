@@ -60,7 +60,7 @@ store.on("error", (err) => {
 
 //Express session info
 const sessionOptions = {
-  store,
+  store: store,
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
