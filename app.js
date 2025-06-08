@@ -24,7 +24,7 @@ const User = require("./models/user.js");
 let port = 8080;
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";   was using this for local system
-const MONGO_URL = process.env.ATLAS_DB_URL;
+
 main()
   .then(() => {
     console.log("connected to DB");
@@ -34,7 +34,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(process.env.ATLAS_DB_URL);
 }
 
 //middlewares
@@ -47,14 +47,14 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json());
 
 const store = MongoStore.create({
-  mongoUrl: MONGO_URL,
+  mongoUrl: process.env.ATLAS_DB_URL,
   crypto: {
     secret: process.env.SECRET,
   },
   touchAfter: 24 * 3600,
 });
 
-store.on("error", () => {
+store.on("error", (err) => {
   console.log("Error in MONGO SESSION STORE!", err);
 });
 
